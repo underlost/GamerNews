@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load comments %}
+{% load threadedcomments_tags %}
+{% load voting_tags %}
+
+{% block title %} {{ comment.comment|truncatewords:10 }} {% endblock %}
+
+{% block content %}
+
+<div id="comment-{{ comment.id }}" class="single comment">
+	
+	<div class="link-details">
+        <span class="title"><a href="/comment/{{ comment.id }}/" title="{{ comment.comment|truncatewords:10 }}">{{ comment.comment|linebreaks }}</a></span>
+
+        <div class="quiet">
+            {% get_comment_count for blob as comment_count %}
+            {% dict_entry_for_item comment from vote_dct as vote %}
+            {% dict_entry_for_item comment from counts_dct as score %}
+                        
+            {% if user.is_authenticated %}   
+                <span class="vote">
+                    <a id="up_{{ comment.id }}" href="#" onclick="vote({{ comment.id }}, '{% if vote and vote.is_downvote %}clear{% else %}up{% endif %}'); return false;"><img src="/static/img/img_vote{% if vote and vote.is_upvote %}d{% endif %}_up.png"/></a>
+                    <a id="down_{{ comment.id }}" href="#" onclick="vote({{ blob.id }}, '{% if vote and vote.is_upvote %}clear{% else %}down{% endif %}'); return false;"><img id="img_{{ comment.id }}_down" src="/static/img/img_vote{% if vote and vote.is_downvote %}d{% endif %}_down.png"/></a> 
+                </span>
+                {% endif %} 
+            
+            <span id="blob_{{ blob.id }}_score">{{score.score|default:0}}</span> point{{ score.score|default:0|pluralize }}
+            by <a href="/user/{{ comment.user }}" title="View more links by {{ comment.user.username }}">{{ comment.user.username }}</a>
+            {{ comment.submit_date|timesince }} ago. | <a href="/comment/{{ comment.id }}">{% if comment_count == 0 %}Discuss{% else %}{% if comment_count == 1 %}{{ comment_count }} comment{% else %}{{ comment_count }} comments{% endif %}{% endif %}</a>
+        </div>
+    </div>
+	
+    {% if user.is_authenticated %}
+    <div id="reply{{ comment.id }}comment">
+
+        {% get_comment_form for comment.content_object as form %}
+        <form class="comment-form" action="/comments/post/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" name="submit" class="btn" value="Add comment">
+            <input type="hidden" name="parent" id="id_parent" value="{{ comment.id }}" />
+            <input type="hidden" name="next" value="/id/{{ blob.id }}/#c{{ comment.id }}" />
+        </form>
+    </div>
+    {% endif %}
+    
+</div>	
+  
+{% endblock %}

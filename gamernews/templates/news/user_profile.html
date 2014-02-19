@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{%  block title %}{{ user_obj }}  | news{% endblock %}
+
+{% block nav %}
+<div id="nav" class="row">
+	<div class="span12">
+	{% if user_obj == user %}
+		<span id="edit-profile" class="pull-right">This is you! <a href="{% url 'edit_profile' %}">Edit your profile.</a></span>
+	{% endif %}
+	<h2>{{ user_obj }} {% if user_obj.name %}<small>({{ user_obj.name }})</small>{% endif %}</h2>
+	</div>
+</div>
+{% endblock %}
+
+{%  block content %}
+<section class="page" id="profile">
+
+	{% if profile.is_private %}
+	<h3>{{ user_obj }}'s profile is set to private.</h3>
+	
+	{% else %}
+	<ul class="unstyled" id="user-info">
+		<li><b>Joined:</b> {{ user_obj.date_joined|timesince }} ago.</li>
+		<li><b>url:</b> {{ user_obj.profile.url }}</li>
+		<li><b>location:</b> {{ user_obj.profile.location }}</li>
+		<li><b>about:</b> {{ user_obj.profile.about }}</li>
+	</ul>
+	
+	<ul class="unstyled" id="user-links">
+		<li><a href="/{{ user_obj }}/submissions/">Submissions</a></li>
+		<li><a href="/{{ user_obj }}/comments/">Comments</a></li>
+	</ul>
+	{% endif %}
+	
+</section>
+{% endblock %}

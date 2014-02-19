@@ -1,0 +1,32 @@
+{% extends 'base.html' %}{% load i18n %}{% load blobs_tag %}{% load voting_tags %}
+
+{% block title %}{% if sortorder %}{{ sortorder|capfirst }}  | Gamer News{% else %}Gamer News | {% endif %}{% endblock %}
+
+{% block header %}
+	{% include "_includes/header.html" %}
+{% endblock %}
+
+{% block content %}
+{% votes_by_user user on blobs as vote_dct %}
+{% vote_counts_for_objects blobs as counts_dct %}
+
+{% for blob in blobs %}
+
+{% if forloop.first %}<ol class="list-unstyled link-list">{% endif %}
+<li id="link-{{ blob.id }}">
+    <div class="position">{{ page.start_index|add:forloop.counter0 }}.</div>
+	{% include 'news/_link.html' %}
+</li>	
+{% if forloop.last %}</ol>{% endif %}	
+
+{% endfor %}
+
+{% include 'news/pagination.html' %}
+
+{% endblock %}
+
+{% block footer %}
+	{% include "_includes/footer.html" %}
+{% endblock %}
+
+

@@ -1,0 +1,64 @@
+{% extends "base.html" %}{% load humanize %}
+
+{% block title %}{{ user_obj.username }} | {% endblock %}
+{% block page %}profile {{ user_obj.username }}{% endblock %}
+
+{% block header %}
+	{% include "_includes/header.html" %}
+	
+	<div class="profile-lead">
+		<div class="container">
+			<h2>{{ user_obj.username }}</h2>	
+		</div>
+	</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	
+	<div class="col-md-12">
+			
+	</div>
+	
+	{% include "core/includes/profile.html" %}
+	
+	<div class="col-md-5 user-list">
+		
+		{% if user_obj.about %}
+		<h3>About</h3>
+		{{ user_obj.about }}
+		{% endif %}
+	
+		<h3>Lists:</h3>
+		{% with user_obj.owned_lists.all as lists %}
+		  {% if lists %}
+		    <ul class="list-unstyled">
+		      {% for l in lists %}
+		        <li><a href="{{ l.get_absolute_url }}">{{ l.title }}</a>
+		        {% if l.description %}<p>{{ l.description }}</p>{% endif %}
+		        </li>
+		      {% empty %}
+		        <li>No lists yet.</li>
+		      {% endfor %}
+		    </ul>
+		  {% endif %}
+		{% endwith %}
+	</div><!-- span5 -->
+	
+	<div class="col-md-4 user-list">
+		<h3>Recently submitted feeds:</h3>
+		{% with user_obj.owned_feeds.all as feeds %}
+		  {% if feeds %}
+		    <ul class="list-unstyled">
+		      {% for f in feeds|slice:":5" %}
+		        <li><a href="{{ f.get_absolute_url }}">{{ f.title }}</a></li>
+		        {% empty %}
+		          <li>{{ user_obj.username }} hasnt added any feeds.</li>
+		      {% endfor %}
+		    </ul>
+		  {% endif %}
+		{% endwith %}
+	</div><!-- span4 -->
+	
+</div>
+{% endblock content %}

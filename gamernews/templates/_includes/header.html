@@ -1,0 +1,80 @@
+{% load cache %}{% load blobs_tag %}{% load core %}
+<div class="navbar navbar-default navbar-fixed-top" id="top">
+	<div class="container">	  
+	  <div class="navbar-header">
+	      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+	      	<span class="sr-only">Toggle navigation</span>
+	      	<span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	       </button>
+	       <a class="navbar-brand" href="/">Gamer News</a>
+	   </div><!-- /.navbar-header -->
+	   
+	   <div class="collapse navbar-collapse" role="navigation">     
+	     	
+	     	<ul class="nav navbar-nav">
+	     		<li class="nav-popular"><a href="/popular">Popular</a></li>
+	     		<li class="nav-new"><a href="/newest">New</a></li>
+	     		<li class="nav-controversial"><a href="/controversial">Controversial</a></li>
+	     		<li class="nav-random"><a href="/random">Random</a></li>
+	     		<li class="dropdown nav-top">
+	     		  <a href="/top" class="dropdown-toggle" data-toggle="dropdown">Top <b class="caret"></b></a>
+	     		  <ul class="dropdown-menu">
+	     		    <li><a href="/top/today">Today</a></li>
+	     		    <li><a href="/top/week">Week</a></li>
+	     		    <li><a href="/top/month">Month</a></li>
+	     		    <li><a href="/top/year">Year</a></li>
+	     		    <li class="divider"></li>
+	     		    <li><a href="/top/">All time</a></li>
+	     		  </ul>
+	     		</li>
+	     	</ul>
+	     	        
+	        <ul class="nav navbar-nav navbar-right">   
+	             
+	          {% if user.is_authenticated %}
+	          	<li class="nav-submit"><a href="/submit/">Submit</a></li>
+	          	<li class="dropdown">
+	          		<a href="{{site_url}}settings/" class="dropdown-toggle" data-toggle="dropdown"> <img id="avatar" width="16" height="16" src="https://secure.gravatar.com/avatar/{{ user|email_hash }}?s=32&amp;d={{STATIC_URL}}img/gravatar_small.png"> <b class="caret"></b></a>
+	          		  <ul class="dropdown-menu">
+	          		    <li><a href="{{site_url}}u/{{ user }}/">My Profile</a></li>
+	          		    <li><a href="{{site_url}}u/{{ user }}/comments/">My Comments</a></li>
+	          		    <li><a href="{{site_url}}u/{{ user }}/posts/">My Posts</a></li>
+	          		    <li class="divider"></li>
+	          		    <li><a href="{{site_url}}settings/">Settings</a></li>
+	          		    <li><a href="{{site_url}}logout/">Logout</a></li>
+	          		  </ul>
+	          	</li>
+	          {% else %}
+	              <li><a href="{{site_url}}login/">Login</a></li>
+	          {% endif %}
+	        </ul>
+
+	   </div><!-- /.navbar-collapse -->	
+	   </div><!-- /.container --> 
+	</div><!-- /.navbar -->
+
+
+<script type="text/javascript">
+	function vote(blob_id, direction) {
+	    var csrf = {'csrfmiddlewaretoken': '{{ csrf_token }}'};
+	    $.post('/blobs/' + blob_id + '/' + direction + 'vote/', csrf, function(data) {
+	        var jsonResult = eval('(' + data + ')');
+	        var new_score = jsonResult.score.total;
+	        $('#blob_' + blob_id + '_score').text(new_score + (new_score == 1 ? '': ''));
+	    });
+	    if (direction == 'up') {
+	        $('#up_' + blob_id).replaceWith('<a id="up_' + blob_id + '" href="#" onclick="return false;"><img src="{{STATIC_URL}}img/img_voted_up.png"/>');
+	        $('#down_' + blob_id).replaceWith('<a id="down_' + blob_id + '" href="#" onclick="vote(' + blob_id + ', \'clear\'); return false;"><img src="{{STATIC_URL}}img/img_vote_down.png"/>');
+	    }
+	    else if (direction == 'down') {
+	        $('#up_' + blob_id).replaceWith('<a id="up_' + blob_id + '" href="#" onclick="vote(' + blob_id + ', \'clear\'); return false;"><img src="{{STATIC_URL}}img/img_vote_up.png"/>');
+	        $('#down_' + blob_id).replaceWith('<a id="down_' + blob_id + '" href="#" onclick="return false;"><img src="{{STATIC_URL}}img/img_voted_down.png"/>');
+	    }
+	    else { // clear
+	        $('#up_' + blob_id).replaceWith('<a id="up_' + blob_id + '" href="#" onclick="vote(' + blob_id + ', \'up\'); return false;"><img src="{{STATIC_URL}}img/img_vote_up.png"/>');
+	        $('#down_' + blob_id).replaceWith('<a id="down_' + blob_id + '" href="#" onclick="vote(' + blob_id + ', \'down\'); return false;"><img src="{{STATIC_URL}}img/img_vote_down.png"/>');
+	    }
+	}
+</script>

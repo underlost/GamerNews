@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load blobs_tag %}
+{% load comments %}
+{% load threadedcomments_tags %}
+{% load voting_tags %}
+
+{% block title %}{{ blob.title }}{% endblock %}
+{% block page %}gamernews{% endblock %}
+
+{% block header %}
+	{% include "_includes/header.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% vote_by_user user.id on blob as vote %}
+{% vote_counts_for_object blob as score %}
+
+<div id="blob-{{ blob.id }}" class="single">
+	
+	{% include 'news/_link.html' %}
+    
+    <div class="note">{{ blob.note }}</div>
+	
+    {% if user.is_authenticated %}
+    	{% get_comment_form for blob as form %}
+    	  <form class="comment-form" action="{% comment_form_target %}" method="post">
+    	    {% csrf_token %}
+    	    {{ form.as_p }}
+    	        <input type="submit" name="submit" class="btn" value="Add comment">
+    	  </form>
+    {% endif %}
+    
+    <div id="comments">
+    {% get_comment_list for blob as comments %}    
+    {% include "news/comments.html" %}
+    </div>
+    
+</div>	
+{% endblock %}
+
+{% block footer %}
+	{% include "_includes/footer.html" %}
+{% endblock %}

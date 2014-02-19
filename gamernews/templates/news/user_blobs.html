@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load blobs_tag %}
+{% load voting_tags %}
+
+{% block title %}{{ user_obj }}'s Submissions | {% endblock %}
+
+{% block nav %}
+<div id="nav" class="row">
+	<div class="span12">
+	<h2><a href="/{{ user_obj }}/">{{ user_obj }}</a> / Submissions</h2>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% vote_counts_for_objects object_list as counts_dct %}
+
+{% for blob in object_list %}
+
+{% if forloop.first %}<ol class="link-list">{% endif %}
+<li id="link-{{ blob.id }}">
+    <div class="position">{{ forloop.counter }}.</div>
+	{% include 'news/_link.html' %}
+</li>	
+{% if forloop.last %}</ol>{% endif %}	
+
+{% endfor %}
+
+{% if is_paginated %}
+  <div class="pagination">
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">&larr; Next</a>
+    {% endif %}
+    {% if page_obj.has_previous and page_obj.has_next %}|{% endif %}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous &rarr;</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}
+

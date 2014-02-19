@@ -1,0 +1,118 @@
+{% extends "base.html" %}{% load humanize %}
+
+{% block title %}Edit your profile{% endblock %}
+
+{% block header %}
+	{% include "{% include "_includes/header.html" %}" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h2 id="edit-profile">{{ user_obj.username }} / Account Settings</h2>		
+	</div>
+	
+	{% include "core/includes/profile.html" %}
+		
+	<div class="col-md-5 user-list">
+			
+	  <form method="post" action="" class="wide">
+	    {% csrf_token %}
+	    
+	    {% if form.errors %}
+	    <div class="alert alert-warning">Please correct the errors below: {{ form.non_field_errors }}</div>
+	    {% endif %}
+	    
+	    <div class="form-group">
+	    	<label for="id_first_name">Your name:</label>
+	    	<div class="row">
+	    		<div class="col-md-6">
+	    			<label class="sr-only" for="id_first_name">First name:</label>
+	    			{{ form.first_name }}
+	    		</div>
+	    		<div class="col-md-6">
+	    			<label class="sr-only" for="id_last_name">Last name:</label>
+	    			{{ form.last_name }}
+	    		</div>
+	    	</div>
+	    </div>
+	    
+		<div class="form-group  {% if form.email.errors %}has-error{% endif %}">
+			<label for="id_email">Email address: (Not visible to the public)</label>
+			{{ form.email }}
+			{% if form.email.errors %}
+			<span class="help-block">{{ form.email.errors }}</span>
+			{% endif %}
+		</div>
+			
+		<div class="form-group  {% if form.location.errors %}has-error{% endif %}">
+			<label for="id_location">Location:</label>
+			{{ form.location }}
+			{% if form.location.errors %}
+			<span class="help-block">{{ form.location.errors }}</span>
+			{% endif %}
+		</div>
+		
+		<div class="form-group  {% if form.url.errors %}has-error{% endif %}">
+			<label for="id_url">Personal website:</label>
+			{{ form.url }}
+			{% if form.url.errors %}
+			<span class="help-block">{{ form.url.errors }}</span>
+			{% endif %}
+		</div>
+		
+		<div class="form-group {% if form.gender.errors %}has-error{% endif %}">
+			<label for="id_gender">Gender:</label>
+			{{ form.gender }}
+			{% if form.gender.errors %}
+			<span class="help-block">{{ form.gender.errors }}</span>
+			{% endif %}
+		</div>
+		
+		<div class="form-group {% if form.about.errors %}has-error{% endif %}">
+			<label for="id_about">About:</label>
+			{{ form.about }}
+			{% if form.about.errors %}
+			<span class="help-block">{{ form.about.errors }}</span>
+			{% endif %}
+		</div>
+		
+		<h3>Site Settings</h3>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-6">
+					<label class="sr-only" for="id_first_name">Column Size:</label>
+					{{ form.feed_column_size }}
+					<span class="help-block">Column size for feeds.</span>
+				</div>
+				<div class="col-md-6">
+					<label class="sr-only" for="id_last_name">Feed Size:</label>
+					{{ form.feed_size }}
+					<span class="help-block">Amount of news items viewable per feed</span>
+				</div>
+			</div>
+		</div>
+					
+		<div class="form-group {% if form.gender.errors %}has-error{% endif %}">
+			<label for="{{ form.timezone.id_for_label }}">Timezone:</label>
+			{{ form.timezone }}
+			{% if form.timezone.errors %}
+			<span class="help-block">{{ form.timezone.errors }}</span>
+			{% endif %}
+		</div>
+		
+		<div class="form-group {% if form.is_beta.errors %}has-error{% endif %}">
+			<label for="id_is_beta">Enable Beta Features?</label>
+			{% for radio in form.is_beta %}
+			<label class="radio inline" for="{{ radio.id_for_label }}">{{ radio }}</label>
+			{% endfor %}
+			<span class="help-block">Beta features are often experimental, and could break the site for you. Enable at your own risk!</span>
+		</div>
+		
+	    <input type="submit" class="btn btn-success" value="Save">
+	    </form>
+	</div>
+</div>
+{% endblock %}
+

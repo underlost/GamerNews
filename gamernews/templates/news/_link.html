@@ -1,0 +1,28 @@
+{% load i18n %}{% load core %}{% load blobs_tag %}{% load humanize %}{% load threadedcomments_tags %}{% load voting_tags %}
+{% get_comment_count for blob as comment_count %}
+	
+	<div class="link-details">
+    	{% if blob.url %}
+        <span class="title"><a href="{{ blob.url }}" title="{{ blob.title|safe }}">{{ blob.title|safe }}</a></span>
+        <span class="domain"><a href="http://{{ blob.url|base_site_url }}">({{ blob.url|base_site_url }})</a></span>
+        {% else %}
+        <span class="title"><a href="/id/{{ blob.id }}" title="{{ blob.title|safe }}">{{ blob.title|safe }}</a></span>
+        {% endif %}
+
+        <div class="quiet">
+             	        	
+        	{% dict_entry_for_item blob from vote_dct as vote %}
+        	{% dict_entry_for_item blob from counts_dct as score %}
+        	
+        	{% if user.is_authenticated %}   
+        		<span class="vote">
+        			<a id="up_{{ blob.id }}" href="#" onclick="vote({{ blob.id }}, '{% ifequal vote.direction -1 %}}clear{% else %}up{% endifequal %}'); return false;"><img src="{{STATIC_URL}}img/img_vote{% ifequal vote.direction 1 %}d{% endifequal %}_up.png"/></a>
+        			<a id="down_{{ blob.id }}" href="#" onclick="vote({{ blob.id }}, '{% ifequal vote.direction 1 %}clear{% else %}down{% endifequal %}'); return false;"><img id="img_{{ blob.id }}_down" src="{{STATIC_URL}}img/img_vote{% ifequal vote.direction -1 %}d{% endifequal %}_down.png"/></a> 
+        		</span>
+        		{% endif %} 
+        	
+       		<span id="blob_{{ blob.id }}_score">{{score.total|default:0}}</span> point{{ score.total|default:0|pluralize }}
+            by <a href="/{{ blob.user }}" title="{% trans 'View more links by' %} {{ blob.user.username }}">{{ blob.user.username }}</a>
+            {{ blob.timestamp|timesince }} ago. | <a href="/id/{{ blob.id }}">{% if comment_count == 0 %}Discuss{% else %}{% if comment_count == 1 %}{{ comment_count }} comment{% else %}{{ comment_count }} comments{% endif %}{% endif %}</a>
+        </div>
+    </div>

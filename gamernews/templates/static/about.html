@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}About | {% endblock %}
+
+{% block header %}
+	{% include "_includes/header.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="page" id="about">
+
+	<h2>About Gamer news</h2>
+	
+	<ul>
+		<li>Hand crafted by: <a href="http://underlost.net">Tyler Rilling</a>.</li>
+		<li>Follow him on twitter: <a href="http://twitter.com/underlost">@underlost</a></li>
+		<li>You can send email to: <a href="mailto:tyler@underlost.net">tyler@underlost.it</a>.</li>
+	</ul>
+	
+	<h3>How?</h3>
+	<p>Gamer news was written in Django, a python web framework. It uses a mix of Redis for storing votes, and memcache for caching everything. 
+	PostgreSQL is used for storing profiles, stories and everything else. Static content is hosted on a Media Temple (dv) server, while the app itself is served up on Heroku.</p>
+	
+	<h3>Why?</h3>
+	<p>Mostly just to prove I could. I wanted to create my own version of Reddit/Hacker News/digg/whatever, to gain a better understanding how the internals of such sites worked. I wanted to create a site with the features that I wanted.</p>
+
+</section>
+{% endblock %}
+
+{% block footer %}
+	{% include "_includes/footer.html" %}
+{% endblock %}

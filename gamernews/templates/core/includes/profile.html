@@ -1,0 +1,13 @@
+{% load humanize %}{% load core %}
+<div class="col-md-3" id="user-info">	
+	{% if user_obj == user %}<a href="http://gravatar.com/emails/">{% endif %}
+	<img id="avatar" width="120" height="120" 
+	src="https://secure.gravatar.com/avatar/{{ user_obj|email_hash }}?s=250&amp;d={{STATIC_URL}}img/gravatar.png">
+	{% if user_obj == user %}</a>{% endif %}
+	{% if user_obj.first_name or user_obj.last_name  %}<h2 class="username">{{ user_obj.first_name }} {{ user_obj.last_name }}</h2>{% endif %}
+	<ul class="list-unstyled">
+		{% if user_obj.location %}<li><span class="glyphicon glyphicon-map-marker"></span> {{ user_obj.location }}</li>{% endif %}
+		{% if user_obj.url %}<li><span class="glyphicon glyphicon-globe"></span> {{ user_obj.url }}</li>{% endif %}
+		<li><span class="glyphicon glyphicon-time"></span> Joined on: {{ user_obj.date_joined|date:"F jS Y" }}</li>
+	</ul>
+</div>

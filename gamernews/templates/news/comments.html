@@ -1,0 +1,49 @@
+{% load comments %}
+{% load threadedcomments_tags %}
+
+{% if comments %}
+	{% for comment in comments|fill_tree|annotate_tree %}
+    
+    		{% if not comment.open and not comment.close %}
+			</li>
+			{% endif %}
+
+			{% if comment.open %}
+    		<ul class="unstyled comments">
+			{% endif %}
+
+			<li{% if comment.last %} class="last"{% endif %}>
+	
+			<div class="comment" id="comment-{{ comment.id }}">
+				<a name="c{{ comment.id }}"></a>
+				<div class = "comment-meta">
+					<a href="/user/{{ comment.user }}/">{{ comment.user }}</a> ({{ comment.submit_date|timesince }} ago.) | <a href="{% get_comment_permalink comment %}">Link</a>
+				</div>
+				<!-- {{ comment.tree_path }} -->
+				<div class="comment-comment">
+					{{ comment.comment|linebreaks }}
+				</div>
+
+			{% if user.is_authenticated %}
+			<a href="/id/{{ blob.id }}/{{ comment.id }}/" id="toggle-reply{{ comment.id }}comment" class="toggle">Reply</a>
+			<div id="reply{{ comment.id }}comment" style="display: none;">
+
+				{% get_comment_form for comment.content_object as form %}
+			   	<form class="comment-form" action="/comments/post/" method="post">
+			   		{% csrf_token %}
+			    	{{ form.as_p }}
+			    	<input type="submit" name="submit" class="btn" value="Add comment">
+			    	<input type="hidden" name="parent" id="id_parent" value="{{ comment.id }}" />
+			        <input type="hidden" name="next" value="/id/{{ blob.id }}/#c{{ comment.id }}" />
+			   	</form>
+			</div>
+			{% endif %}
+					
+			</div>
+			{% for close in comment.close %}
+    			</li>
+    		</ul>
+			{% endfor %}
+	
+	{% endfor %}
+{% endif %}

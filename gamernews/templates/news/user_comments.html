@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load blobs_tag %}
+{% load voting_tags %}
+
+{% block title %}{{ user_obj }}'s Comments | {% endblock %}
+
+{% block nav %}
+<div id="nav" class="row">
+	<div class="span12">
+	<h2><a href="/{{ user_obj }}/">{{ user_obj }}</a> / Comments</h2>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% votes_by_user user on object_list as vote_dct %}
+{% vote_counts_for_objects object_list as counts_dct %}
+
+{% for comment in object_list %}
+
+{% if forloop.first %}<ol class="link-list">{% endif %}
+<li id="comment-{{ comment.id }}" class="comment">
+	<div class="link-details">
+		
+		<span class="title"><a href="/comment/{{ comment.id }}" title="{{ comment.comment|truncatewords:10 }}">{{ comment.comment|linebreaks }}</a></span>
+		<div class="quiet">
+	    {% dict_entry_for_item comment from vote_dct as vote %}
+	    {% dict_entry_for_item comment from counts_dct as score %}
+	    	        	
+	    {{ comment.submit_date|timesince }} ago. | on: <a href="/id/{{ comment.content_object.id }}/">{{ comment.content_object.title }}</a> | <a href="/comment/{{ comment.id }}">Link</a>
+	    </div>
+	</div>	
+</li>	
+{% if forloop.last %}</ol>{% endif %}	
+
+{% endfor %}
+
+{% if is_paginated %}
+  <div class="pagination">
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">&larr; Next</a>
+    {% endif %}
+    {% if page_obj.has_previous and page_obj.has_next %}|{% endif %}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous &rarr;</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}
+

@@ -237,18 +237,10 @@ module.exports = function (grunt) {
           'css/*.map',
           'fonts/*'
         ],
-        dest: 'gamernews/static'
+        dest: '../gamernews/static'
       }
     },
 
-    connect: {
-      server: {
-        options: {
-          port: 3000,
-          base: '.'
-        }
-      }
-    },
 
     validation: {
       options: {

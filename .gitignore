@@ -8,6 +8,11 @@ assets/test-infra/*
 assets/validation-report.json
 assets/validation-status.json
 
+gamernews/static/css/jaded-rtl.min.css
+gamernews/static/css/jaded-theme.css.map
+gamernews/static/css/jaded-theme.min.css
+gamernews/static/css/jaded.css.map
+
 # Numerous always-ignore extensions
 *.diff
 *.err

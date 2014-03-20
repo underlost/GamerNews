@@ -1,9 +1,15 @@
+import logging
+import feedparser
+from time import strftime
+from hashlib import md5
 from datetime import datetime
 
 from django.db import models, IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _
+
+log = logging.getLogger(__name__)
 
 class BlobManager(models.Manager):
 

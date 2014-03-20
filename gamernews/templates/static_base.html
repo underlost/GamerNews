@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+{% block page %}static-page{% endblock %}
+{% block extra %}{% endblock %}
+
+{% block header %}
+	{% include "_header.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+	{% block content-inner %}{% endblock %}
+	</div>
+
+	<aside class="col-md-4">
+		{% include "core/includes/support.html" %}
+	</aside>
+</div>
+{% endblock %}
+
+{% block footer %}
+	{% include "_footer.html" %}
+{% endblock %}

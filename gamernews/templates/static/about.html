@@ -1,32 +1,42 @@
-{% extends 'base.html' %}
+{% extends 'static_base.html' %}
 
 {% block title %}About | {% endblock %}
 
-{% block header %}
-	{% include "_includes/header.html" %}
-{% endblock %}
-
-{% block content %}
+{% block content-inner %}
 <section class="page" id="about">
 
-	<h2>About Gamer news</h2>
-	
-	<ul>
-		<li>Hand crafted by: <a href="http://underlost.net">Tyler Rilling</a>.</li>
-		<li>Follow him on twitter: <a href="http://twitter.com/underlost">@underlost</a></li>
-		<li>You can send email to: <a href="mailto:tyler@underlost.net">tyler@underlost.it</a>.</li>
-	</ul>
-	
-	<h3>How?</h3>
-	<p>Gamer news was written in Django, a python web framework. It uses a mix of Redis for storing votes, and memcache for caching everything. 
-	PostgreSQL is used for storing profiles, stories and everything else. Static content is hosted on a Media Temple (dv) server, while the app itself is served up on Heroku.</p>
-	
-	<h3>Why?</h3>
-	<p>Mostly just to prove I could. I wanted to create my own version of Reddit/Hacker News/digg/whatever, to gain a better understanding how the internals of such sites worked. I wanted to create a site with the features that I wanted.</p>
+	<h2 id="JG-head">About {{site_name}}</h2>
+
+	<div class="well">
+
+		<ul>
+			<li>Hand crafted by: <a href="http://underlost.net">Tyler Rilling</a>.</li>
+			<li>Follow him on twitter: <a href="http://twitter.com/underlost">@underlost</a></li>
+			<li>You can send email to: <a href="mailto:tyler@underlost.net">tyler@underlost.it</a>.</li>
+		</ul>
+
+		<h3>How?</h3>
+		<p>{{site_name}} was written in Django, a python web framework. It uses a mix of Redis for storing votes, and memcache for caching everything.
+		PostgreSQL is used for storing profiles, stories and everything else. Static content is hosted on a Media Temple (dv) server, while the app itself is served up on Heroku.</p>
+
+		<h3>Why?</h3>
+		<p>Mostly just to prove I could. I wanted to create my own version of Reddit/Hacker News/digg/whatever, to gain a better understanding how the internals of such sites worked. I wanted to create a site with the features that I wanted.</p>
+
+
+	</div>
+
+	<h4>Creator</h4>
+	<div class="well">
+		<div class="media">
+		  <a class="pull-left" href="http://underlost.net/">
+		    <img class="media-object img-rounded" src="https://secure.gravatar.com/avatar/ddf39b714f62f43094e000cf27120d97?s=100">
+		  </a>
+		  <div class="media-body">
+		    <h4 class="media-heading">Tyler Rilling <a href="http://underlost.net/">(underlost.net)</a></h4>
+		    <p>Tyler has been building web applications for almost a decade now, ever since he was 12. At 16, he built a successful web hosting company. Since then, he's worked with small and large companies helping them develop their brand and websites. And in his freetime, he built this site. Have a question, comment or feedback? You should email him: <a href="mailto://tyler@underlost.net?subject=jadedgamer">tyler @ underlost dot net</a>.</p>
+		  </div>
+		</div>
+	</div>
 
 </section>
-{% endblock %}
-
-{% block footer %}
-	{% include "_includes/footer.html" %}
 {% endblock %}

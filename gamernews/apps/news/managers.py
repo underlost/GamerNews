@@ -15,7 +15,7 @@ class BlobManager(models.Manager):
 
 	def create_or_update_by_url(self, link, **kwargs):
 		try:
-			item = self.get(link=link)
+			item = self.get(link=url)
 
 		except self.model.DoesNotExist:
 			# Create a new item

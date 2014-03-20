@@ -1,4 +1,4 @@
-from vendor.django_comments.models import Comment
+from django_comments.models import Comment
 from news.forms import SimpleCommentForm
 
 def get_model():

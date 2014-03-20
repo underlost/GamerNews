@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 
-from gamernews.apps.core.models import Account as User
-from gamernews.vendor.django_comments.models import Comment
+from core.models import Account as User
+from django_comments.models import Comment
 from .models import ThreadedComment
 
 def single_comment(request, id):

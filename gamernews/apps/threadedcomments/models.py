@@ -2,8 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from gamernews.vendor.django_comments.models import Comment
-from gamernews.vendor.django_comments.managers import CommentManager
+from django_comments.models import Comment
+from django_comments.managers import CommentManager
 
 PATH_SEPARATOR = getattr(settings, 'COMMENT_PATH_SEPARATOR', '/')
 PATH_DIGITS = getattr(settings, 'COMMENT_PATH_DIGITS', 10)

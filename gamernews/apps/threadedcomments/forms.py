@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_unicode
 
-from gamernews.vendor.django_comments.forms import CommentForm
+from django_comments.forms import CommentForm
 from .models import ThreadedComment
 
 class ThreadedCommentForm(CommentForm):
@@ -27,6 +27,6 @@ class ThreadedCommentForm(CommentForm):
         d['parent_id'] = self.cleaned_data['parent']
         return d
 
-ThreadedCommentForm.base_fields.pop('name')    
+ThreadedCommentForm.base_fields.pop('name')
 ThreadedCommentForm.base_fields.pop('email')
 ThreadedCommentForm.base_fields.pop('url')

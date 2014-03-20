@@ -7,7 +7,7 @@ from django.utils.encoding import force_unicode
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
-from vendor.django_comments.forms import CommentForm
+from django_comments.forms import CommentForm
 
 from .models import Blob, BlobInstance
 

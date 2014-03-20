@@ -3,7 +3,7 @@ from django.views.decorators.cache import cache_page
 
 from .models import Blob
 from . import views
-from gamernews.apps.voting.views import vote_on_object
+from voting.views import vote_on_object
 
 
 blob_dict = {

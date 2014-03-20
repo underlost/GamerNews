@@ -1,6 +1,6 @@
 from django import template
 from django.template.loader import render_to_string
-from gamernews.vendor.django_comments.templatetags.comments import BaseCommentNode
+from django_comments.templatetags.comments import BaseCommentNode
 from gamernews.vendor import django_comments as comments
 
 from ..util import annotate_tree_properties, fill_tree as real_fill_tree
@@ -331,7 +331,7 @@ def get_comment_form(parser, token):
 @register.tag
 def render_comment_form(parser, token):
     """
-    Render the comment form (as returned by ``{% render_comment_form %}``) 
+    Render the comment form (as returned by ``{% render_comment_form %}``)
     through the ``comments/form.html`` template.
 
     Syntax::

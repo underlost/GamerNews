@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from gamernews.vendor.django_comments.admin import CommentsAdmin
+from django_comments.admin import CommentsAdmin
 from .models import ThreadedComment
 
 class ThreadedCommentsAdmin(CommentsAdmin):
@@ -28,4 +28,3 @@ class ThreadedCommentsAdmin(CommentsAdmin):
     raw_id_fields = ("parent",)
 
 admin.site.register(ThreadedComment, ThreadedCommentsAdmin)
-

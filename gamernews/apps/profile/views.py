@@ -27,7 +27,7 @@ class BlobsforUser(ListView):
         context.update({'user_obj': self.u})
         return context
 
-class CommentsforUser(ListView):
+class UserComments(ListView):
     paginate_by = 20
     template_name = 'profile/user_comments.html'
 

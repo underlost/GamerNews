@@ -26,12 +26,12 @@ class AccountAdmin(UserAdmin):
 	list_display = ( 'username', 'is_staff', 'last_login', 'date_joined',)
 	list_filter = ('is_staff', 'is_active', 'is_superuser', 'is_beta', )
 	form = AccountChangeForm
-	add_form = MyUserCreationForm  	
+	add_form = MyUserCreationForm
 	fieldsets = UserAdmin.fieldsets + (
 			(None, {'fields': (
 				'gender', 'location', 'url', 'about',
 				'hide_mobile', 'last_seen_on', 'last_seen_ip', 'preferences', 'view_settings', 'send_emails',
-				'feed_column_size', 'feed_size', 'timezone', 'is_beta',
+				'timezone', 'is_beta',
 			)}),
 	)
 

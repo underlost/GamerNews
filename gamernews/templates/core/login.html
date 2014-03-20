@@ -4,32 +4,44 @@
 {% block page %}login{% endblock %}
 
 {% block content %}
+<ol class="breadcrumb">
+	<li><a href="{{site_url}}">Home</a></li>
+	<li class="active">Login</li>
+</ol>
 
 <div class="NarrowWrap">
 	<h2>Login</h2>
 
 	{% if form.errors %}
-	<p>Your username and password didn't match. Please try again.</p>
+	<div class="alert alert-danger">
+		<p>Please fix the errors below before you can continue.</p>
+	</div>
 	{% endif %}
 
-	<form class="form-stacked" method="post" action="{% url 'django.contrib.auth.views.login' %}">{% csrf_token %}
+	<form class="form-signin" method="post" action="{% url 'Core:login' %}">{% csrf_token %}
 
-	  <div class="form-group">
-	    <label for="id_username" class="sr-only">Username</label>
-	    <input id="id_username" class="form-control" placeholder="Username" type="text" name="username" maxlength="255" />
-	  </div>
-	  
-	  <div class="form-group">
-	    <label for="id_password" class="sr-only">Password</label>
-	    <input id="id_password" class="form-control" placeholder="Password" type="password" name="password" />
-	  </div>
+		<div class="form-group {% if form.username.errors %}has-error{% endif %}">
+			<label for="id_username" class="sr-only">{% trans 'Username' %}</label>
+			<input id="id_username" class="form-control" placeholder="Username" type="text" name="username" maxlength="255" />
+			{% if form.username.errors %}
+			<span class="help-block">{{ form.username.errors }}</span>
+			{% endif %}
+		</div>
 
-	<input class="btn primary btn-success" type="submit" value="login" />
+		<div class="form-group {% if form.password.errors %}has-error{% endif %}">
+	    	<label for="id_password" class="sr-only">{% trans 'Password' %}</label>
+	    	<input id="id_password" class="form-control" placeholder="Password" type="password" name="password" />
+	    	{% if form.password.errors %}
+	    	<span class="help-block">{{ form.password.errors }}</span>
+	    	{% endif %}
+	    </div>
+
+	<input class="btn btn-primary" type="submit" value="login" />
 	<input type="hidden" name="next" value="{{ next }}" />
 	</form>
-	
-	<p><a href="{% url 'password_reset' %}">Forgot</a> your password?</p>
-	<p><a href="{% url 'registration_register' %}">Need an account</a>?</p>
+
+	<p><a href="{% url 'Core:password_reset' %}">Forgot</a> your password?</p>
+	{% if site_register %}<p><a href="{% url 'Core:register' %}">Need an account</a>?</p>{% endif %}
 
 </div>
 

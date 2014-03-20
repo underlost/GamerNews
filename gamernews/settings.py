@@ -19,11 +19,15 @@ MEDIA_ROOT    = os.path.join(CURRENT_DIR, 'media/')
 UTILS_ROOT    = os.path.join(CURRENT_DIR, 'utils')
 VENDOR_ROOT    = os.path.join(CURRENT_DIR, 'vendor')
 
+if '/apps' not in ' '.join(sys.path):
+    sys.path.append(APPS_ROOT)
+
 if '/utils' not in ' '.join(sys.path):
     sys.path.append(UTILS_ROOT)
 
 if '/vendor' not in ' '.join(sys.path):
     sys.path.append(VENDOR_ROOT)
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -133,7 +137,7 @@ MIDDLEWARE_CLASSES = (
     'gamernews.apps.core.middleware.LastSeenMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = {	
+TEMPLATE_CONTEXT_PROCESSORS = {
 	'django.contrib.auth.context_processors.auth',
 	'django.core.context_processors.debug',
 	'django.core.context_processors.i18n',
@@ -161,20 +165,21 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.humanize',
-    
+
     #Prancing on Heroku
     'djcelery',
     'gunicorn',
     'taggit',
     'compressor',
     'storages',
-    
+
     #vendor
     'gamernews.vendor.django_comments',
-    
+
     #Internal
     'gamernews.apps.core',
     'gamernews.apps.news',
+    'gamernews.apps.populate',
     'gamernews.apps.voting',
     'gamernews.apps.threadedcomments',
 )

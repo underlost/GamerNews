@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import widgets, Select
 from django.utils.safestring import mark_safe
-from django.contrib.auth import authenticate
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+from django.utils.translation import ugettext as _, ugettext_lazy as __
 
 from .models import Account
 
@@ -11,7 +12,7 @@ class AccountForm(forms.ModelForm):
     #object. The view (see views.py) takes care of that
     class Meta(object):
         model = Account
-        fields = ['about', 'location', 'url', 'gender', ]
+        fields = ['location', 'url', 'gender', ]
     email = forms.EmailField(required=False)
 
     def __init__(self, *args, **kwargs):
@@ -28,13 +29,59 @@ class AccountForm(forms.ModelForm):
                 instance.save()
         return instance
 
+class PasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label=_("Enter your email address to reset your password"),
+        widget=forms.TextInput(attrs={'type':'email', 'class':'form-control', 'placeholder':'Email',}),
+        max_length=254,
+    )
+
+    def clean(self):
+        cleaned_data = super(PasswordResetForm, self).clean()
+
+        # Find users of this email address
+        UserModel = get_user_model()
+        email = cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError(_("Please fill your email address."))
+        active_users = UserModel._default_manager.filter(email__iexact=email, is_active=True)
+
+        if active_users.exists():
+            # Check if all users of the email address are LDAP users (and give an error if they are)
+            found_non_ldap_user = False
+            for user in active_users:
+                if user.has_usable_password():
+                    found_non_ldap_user = True
+                    break
+
+            if not found_non_ldap_user:
+                # All found users are LDAP users, give error message
+                raise forms.ValidationError(_("Sorry, you cannot reset your password here as your user account is managed by another server."))
+        else:
+            # No user accounts exist
+            raise forms.ValidationError(_("This email address is not recognised."))
+
+        return cleaned_data
 
 class UserCreationForm(forms.ModelForm):
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
     }
-    username = forms.RegexField(label=_("Username"), max_length=30, regex=r'^[\w-]+$')
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    username = forms.RegexField(
+    	label=_("Username"),
+    	widget=forms.TextInput(attrs={'type':'text', 'class':'form-control', 'placeholder':'Username',}),
+    	max_length=30,
+    	regex=r'^[\w-]+$',
+    	error_message = _("Usernames must contain only letters, numbers and underscores.")
+    )
+    password = forms.CharField(
+    	label=_("Password"),
+    	widget=forms.PasswordInput(attrs={'type':'password', 'class':'form-control', 'placeholder':'Password',})
+    )
+    email = forms.EmailField(
+    	label=_("Email"),
+    	widget=forms.TextInput(attrs={'type':'email', 'class':'form-control', 'placeholder':'Email',})
+    )
 
     class Meta:
         model = Account
@@ -56,7 +103,6 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-        
 
 class AccountModelForm(forms.ModelForm):
 
@@ -68,17 +114,17 @@ class AccountModelForm(forms.ModelForm):
 			'secret_token', 'send_emails', 'is_beta',
 			)
 		widgets = {
-		
+
 			#Account
 			'first_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name',}),
-			'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name',}),	
-			'email': forms.TextInput(attrs={'type':'email', 'class':'form-control', 'placeholder':'Email address',}),	
-			
+			'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name',}),
+			'email': forms.TextInput(attrs={'type':'email', 'class':'form-control', 'placeholder':'Email address',}),
+
 			#Profile
 			'about': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Site Description', 'rows':'2'}),
 			'location': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Collection name',}),
 			'url': forms.TextInput(attrs={'type':'url', 'class':'form-control', 'placeholder':'Link to your other website?',}),
 			'gender': forms.Select(attrs={'class':'form-control',}),
 			'timezone': forms.Select(attrs={'class':'form-control',}),
-			
+
 		}

@@ -11,10 +11,10 @@ from django.utils.translation import ugettext as _
 from django.core.paginator import Paginator, Page, InvalidPage, EmptyPage
 from django.views.generic.list import ListView
 
-from gamernews.apps.core.models import Account
-from gamernews.apps.threadedcomments.models import ThreadedComment
-from gamernews.apps.voting.models import Vote
-from gamernews.apps.voting.views import vote_on_object
+from core.models import Account
+from threadedcomments.models import ThreadedComment
+from voting.models import Vote
+from voting.views import vote_on_object
 
 from .forms import *
 from .models import Blob, BlobInstance
@@ -45,12 +45,12 @@ def order_blobs(request, sortorder, blobs, min_tv=0, subset=None):
 
 	#sort blob on their vote score value.
 	def _sort_blobs(votes, blobs,):
-		scores = [(v['score'], v['object_id'],) for v in votes.all()] 
+		scores = [(v['score'], v['object_id'],) for v in votes.all()]
 		#scores.sort()
 		id_blob = dict((blob.id, blob) for blob in blobs)
 		sorted_blobs = []
 		for score, id in scores:
-			blob = id_blob.get(id, False) 
+			blob = id_blob.get(id, False)
 			if blob:
 				sorted_blobs.append(blob)
 		return sorted_blobs
@@ -61,7 +61,7 @@ def order_blobs(request, sortorder, blobs, min_tv=0, subset=None):
 			delta_in_hours = (int(datetime.datetime.now().strftime("%s")) - int(blob.timestamp.strftime("%s"))) / 3600
 			blob.popularity = ((blob.score() - 1) / ((delta_in_hours + 2)**1.8))
 		blobs = sorted(blobs, key=lambda x: x.popularity, reverse=True)
-	
+
 	elif sortorder == 'controversial':
 		votes = Vote.objects.get_controversial(Blob, object_ids=blob_ids, min_tv=min_tv)
 		return paginate_blobs(request, votes, blobs)
@@ -79,7 +79,7 @@ def order_blobs(request, sortorder, blobs, min_tv=0, subset=None):
 	elif sortorder == 'random':
 		blobs = blobs.filter(timestamp__gte=datetime.datetime.now()-timedelta(days=3)).order_by('?')[:30]
 	elif sortorder == 'unseen':
-		if request.user.is_authenticated(): 
+		if request.user.is_authenticated():
 			votes = Vote.objects.get_user_votes(request.user, Blob) #get user votes.
 			votes = votes.values_list('object_id', )
 			blobs = blobs.exclude(id__in=votes)
@@ -96,7 +96,7 @@ def blob_list(request, *args, **kwargs):
 	extra_context = kwargs.get('extra_context', dict())
 	time_frame = kwargs.get('time', None)
 
-	page = False 
+	page = False
 
 	if kwargs.has_key('blobs'):
 		blobs = kwargs['blobs']
@@ -120,22 +120,22 @@ def blob_list(request, *args, **kwargs):
 	subset = kwargs.get('subset', None)
 	page, blobs = order_blobs(request, kwargs['sortorder'], blobs, min_tv, subset)
 
-	if not page: 
+	if not page:
 		page = paginate(request, blobs)
 		blobs = page.object_list
 
 	context = {'current' : 'all_blobs'}
 	context.update(extra_context)
 	context.update({
-		'blobs'  : blobs, 
+		'blobs'  : blobs,
 		'page' : page,
 		'votedata' : Vote,
 		'sortorder' : kwargs.get('sortorder', ''),
 		'total_blobs' : Blob.active.count(),
-		'total_votes' : get_user_votes(request) 
+		'total_votes' : get_user_votes(request)
 	})
 
-	c = RequestContext(request, context)    
+	c = RequestContext(request, context)
 	t = loader.get_template(template_name)
 	return HttpResponse(t.render(c))
 
@@ -157,24 +157,6 @@ def single_comment_for_blob(request, blob_id, comment_id):
 	variables = RequestContext(request, {'blob': blob, 'comment': comment,})
 	return render_to_response('news/single_comment.html', variables)
 
-def user_profile(request, username):
-	account = get_object_or_404(Account, username=username)
-	variables = RequestContext(request, {'user_obj': account, })
-	return render_to_response(['news/user_profile.html'], variables)
-
-class BlobsforUser(ListView):
-	paginate_by = 20
-	template_name = 'news/user_blobs.html'
-	
-	def get_queryset(self):
-		self.u = get_object_or_404(Account, username=self.kwargs.pop('username'))
-		return Blob.objects.filter(user__username=self.u).order_by('-timestamp')
-
-	def get_context_data(self, **kwargs):
-		context = super(BlobsforUser, self).get_context_data(**kwargs)
-		context.update({'user_obj': self.u})
-		return context
-
 
 @login_required
 def submit(request):
@@ -194,12 +176,12 @@ def submit(request):
 			initial["url"] = request.GET["url"]
 		if "title" in request.GET:
 			initial["title"] = request.GET["title"].strip()
-		
+
 		if initial:
 			blob_form = BlobInstanceForm(initial=initial)
 		else:
 			blob_form = BlobInstanceForm()
-	
+
 	#blobs_add_url = "http://news.underlost.net" + reverse(submit)
 	bookmarklet = "javascript:window.location=%22http://news.underlost.net/submit/?url=%22+encodeURIComponent(document.location)+%22&title=%22+encodeURIComponent(document.title)"
 	return render_to_response("news/submit.html", { "bookmarklet": bookmarklet, "blob_form": blob_form,}, context_instance=RequestContext(request))

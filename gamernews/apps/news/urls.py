@@ -19,12 +19,9 @@ urlpatterns = patterns('',
 	url(r'^submit/$', views.submit, name='submit_form'),
 	url(r'^blobs/(?P<object_id>.*)/(?P<direction>up|down|clear)vote/?$', vote_on_object, blob_dict),
 	url(r'^id/(?P<blob_id>.*)/(?P<comment_id>.*)/$', views.single_comment_for_blob, name='single_comment_for_blob'),
-	
+
 	url(r'^id/(?P<id>.*)/$', views.single_blob, name='single_link'),
 	url(r'^((?P<sortorder>newest|popular|controversial|unpopular|unseen|top|random)/)?((?P<time>today|week|month|year|all)/)?$', views.blob_list , name='blob_list'),
-	
-	#User
-	url(r'^u/(?P<username>[\w-]+)/posts/$', views.BlobsforUser.as_view(), name = "blobs-by-user"), 
-	url(r'^u/(?P<username>[\w-]+)/$', views.user_profile, name='user_profile'),
+
 
 )

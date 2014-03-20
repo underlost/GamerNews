@@ -12,7 +12,6 @@ from django.template.defaultfilters import slugify
 
 from core.models import Account
 from news.managers import BlobManager, ActiveManager
-from news.fields import AutoSlugField
 from voting.models import Vote
 
 blob_types = (
@@ -22,7 +21,7 @@ blob_types = (
 )
 
 class Blob(models.Model):
-    url = models.URLField(blank=True)
+    url = models.URLField(blank=True, max_length=510)
     title = models.CharField(_('title'), max_length=510)
     slug = models.SlugField(unique_for_date='timestamp')
     note = models.TextField(_('note'), blank=True)
@@ -69,7 +68,7 @@ class BlobInstance(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="saved_blobs", verbose_name=_('user'))
     timestamp = models.DateTimeField(_('saved'), default=datetime.now)
     title = models.CharField(_('title'), max_length=510)
-    slug = models.SlugField(unique_for_date='timestamp')
+    slug = models.SlugField(unique_for_date='timestamp', max_length=510)
 
     note = models.TextField(_('note'), blank=True)
 

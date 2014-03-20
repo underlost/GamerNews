@@ -14,10 +14,10 @@ from django.contrib.messages import constants as messages
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 CURRENT_DIR   = os.path.dirname(__file__)
-TEMPLATE_DIRS = (os.path.join(CURRENT_DIR, 'templates'),)
-MEDIA_ROOT    = os.path.join(CURRENT_DIR, 'media/')
+TEMPLATE_DIRS = os.path.join(CURRENT_DIR, 'templates')
 UTILS_ROOT    = os.path.join(CURRENT_DIR, 'utils')
-VENDOR_ROOT    = os.path.join(CURRENT_DIR, 'vendor')
+APPS_ROOT    = os.path.join(CURRENT_DIR, 'apps')
+VENDOR_ROOT   = os.path.join(CURRENT_DIR, 'vendor')
 
 if '/apps' not in ' '.join(sys.path):
     sys.path.append(APPS_ROOT)
@@ -27,7 +27,6 @@ if '/utils' not in ' '.join(sys.path):
 
 if '/vendor' not in ' '.join(sys.path):
     sys.path.append(VENDOR_ROOT)
-
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

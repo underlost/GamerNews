@@ -23,7 +23,7 @@ blob_types = (
 class Blob(models.Model):
     url = models.URLField(blank=True, max_length=510)
     title = models.CharField(_('title'), max_length=510)
-    slug = models.SlugField(unique_for_date='timestamp')
+    slug = models.SlugField(unique_for_date='timestamp', max_length=510)
     note = models.TextField(_('note'), blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="added_blobs", verbose_name=_('user'))
     timestamp = models.DateTimeField(_('timestamp'), default=datetime.now)

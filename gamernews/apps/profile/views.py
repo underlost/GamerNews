@@ -9,7 +9,7 @@ from django_comments.models import Comment
 from threadedcomments.models import ThreadedComment
 from news.models import Blob, BlobInstance
 
-def user_profile(request, username):
+def UserProfile(request, username):
     account = get_object_or_404(Account, username=username)
     variables = RequestContext(request, {'user_obj': account, })
     return render_to_response(['profile/user_profile.html'], variables)

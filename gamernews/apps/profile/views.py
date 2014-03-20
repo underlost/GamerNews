@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 
 from core.models import Account as User
-from vendor.django_comments.models import Comment
+from django_comments.models import Comment
 from threadedcomments.models import ThreadedComment
 from news.models import Blob, BlobInstance
 

@@ -139,7 +139,7 @@ class FeedUpdateWorker(threading.Thread):
 
             Blob.objects.create_or_update_by_url(link,
                 title = title,
-                slug = slugify(title)
+                slug = slugify(title),
                 user = rand_user,
                 note = content,
                 timestamp = date_modified

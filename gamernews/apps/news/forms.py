@@ -7,16 +7,16 @@ from django.utils.encoding import force_unicode
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
-from gamernews.vendor.django_comments.forms import CommentForm
+from vendor.django_comments.forms import CommentForm
 
-from .models import Blob, BlobInstance 
+from .models import Blob, BlobInstance
 
 class BlobInstanceForm(forms.ModelForm):
-	
+
 	url = forms.URLField(label = "URL", required=False, widget=forms.TextInput(attrs={"size": 120, "class": "form-control"}))
 	title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={"size": 120, "class": "form-control"}))
 	note = forms.CharField(required=False, widget=forms.Textarea(attrs={"class": "form-control"}))
-	
+
 	def __init__(self, user=None, *args, **kwargs):
 		self.user = user
 		super(BlobInstanceForm, self).__init__(*args, **kwargs)
@@ -28,11 +28,11 @@ class BlobInstanceForm(forms.ModelForm):
 		if url and BlobInstance.objects.filter(blob__url=url, user=self.user).count() > 0:
 			raise forms.ValidationError(_("You have already submitted this link."))
 		return cleaned_data
-	
+
 	def save(self, commit=True):
 		self.instance.url = self.cleaned_data['url']
 		return super(BlobInstanceForm, self).save(commit)
-	
+
 	class Meta:
 		model = BlobInstance
 		exclude = ('blob', 'user', 'slug', 'saved',)
@@ -51,6 +51,6 @@ class SimpleCommentForm(CommentForm):
 			is_removed   = False,
 		)
 
-SimpleCommentForm.base_fields.pop('name')    
+SimpleCommentForm.base_fields.pop('name')
 SimpleCommentForm.base_fields.pop('email')
 SimpleCommentForm.base_fields.pop('url')

@@ -14,6 +14,5 @@ blob_dict = {
 }
 
 urlpatterns = patterns('',
-	url(r'^u/(?P<username>[\w-]+)/comments/$', views.CommentsforUser.as_view(), name = "comments-by-user"),
 	url(r'^comment/(?P<id>.*)/$', views.single_comment, name='single_comment'),
 )

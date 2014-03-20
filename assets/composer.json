@@ -1,0 +1,21 @@
+{
+  "name": "GamerNews",
+  "description": "Assets for GamerNews",
+  "keywords": ["GamerNews"],
+  "homepage": "http://news.underlost.net",
+  "authors": [
+    {
+      "name": "Tyler Rilling",
+      "email": "tyler@junderlost.net"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/underlost/GamerNews/issues"
+  },
+  "license": "MIT",
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    }
+  }
+}

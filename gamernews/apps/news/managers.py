@@ -13,18 +13,18 @@ class BlobManager(models.Manager):
 	def hidden(self):
 		return super(BlobManager, self).get_query_set().filter(is_hidden=False)
 
-	def create_or_update_by_url(self, link, **kwargs):
+	def create_or_update_by_url(self, url, **kwargs):
 		try:
-			item = self.get(link=url)
+			item = self.get(url=url)
 
 		except self.model.DoesNotExist:
 			# Create a new item
-			log.debug('Creating entry: %s', link)
-			kwargs['link'] = link
+			log.debug('Creating entry: %s', url)
+			kwargs['url'] = url
 			item = self.create(**kwargs)
 
 		else:
-			log.debug('Updating entry: %s', link)
+			log.debug('Updating entry: %s', url)
 
 			# Don't update the date since most feeds get this wrong.
 			kwargs.pop('timestamp')

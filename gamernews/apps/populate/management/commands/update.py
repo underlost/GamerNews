@@ -110,7 +110,7 @@ class FeedUpdateWorker(threading.Thread):
             # Parse out the entry, handling all the fun stuff that feeds can do.
             title = entry.title
             guid = entry.get("id", entry.link)
-            link = entry.link
+            url = entry.link
             rand_user = Account.objects.order_by('?')[0]
 
             if not guid:
@@ -137,7 +137,7 @@ class FeedUpdateWorker(threading.Thread):
             except TypeError:
                 date_modified = datetime.datetime.now()
 
-            Blob.objects.create_or_update_by_url(link,
+            Blob.objects.create_or_update_by_url(url,
                 title = title,
                 slug = slugify(title),
                 user = rand_user,

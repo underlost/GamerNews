@@ -12,6 +12,12 @@ from .models import ThreadedComment
 class ThreadedCommentForm(CommentForm):
     parent = forms.IntegerField(required=False, widget=forms.HiddenInput)
 
+    comment = forms.CharField(
+        label=_('Comment'),
+        widget=forms.Textarea(attrs={'class':'form-control',}),
+        max_length=COMMENT_MAX_LENGTH
+    )
+
     def __init__(self, target_object, parent=None, data=None, initial=None):
         self.parent = parent
         if initial is None:

@@ -318,7 +318,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-static', 'copy:gamernews');
 
   // Full distribution task.
-  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-js']);
+  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-js', 'dist-static']);
 
   // Default task.
   grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data']);

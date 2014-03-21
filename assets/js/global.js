@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 $(document).ready(function () {
   var active_url = window.location.pathname, active_url = active_url.replace(/\/$/, '');
   if (active_url == '') {
@@ -72,3 +73,4 @@ $(document).ajaxSend(function (event, xhr, settings) {
     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
   }
 });
+/* jshint ignore:end */

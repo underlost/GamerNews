@@ -14,12 +14,13 @@ def single_comment(request, id):
     variables = RequestContext(request, {'comment': comment})
     return render_to_response('comments/single.html', variables)
 
-def comment_posted( request ):
+def comment_posted(request):
     if request.GET['c']:
-        comment_id, blob_id  = request.GET['c'].split( ':' )
-        blob = Blob.objects.get( pk=blob_id )
+        comment_id, blob_id = request.GET['c']
+        comment = Comment.objects.get( pk=comment_id )
+        blob = Blob.objects.get(pk=blob_id)
 
-        if post:
+        if blob:
             return HttpResponseRedirect( blob.get_absolute_url() )
 
     return HttpResponseRedirect( "/" )

@@ -16,8 +16,7 @@ def single_comment(request, id):
 
 def comment_posted(request):
     if request.GET['c']:
-        comment_id, blob_id = request.GET['c']
-        comment = Comment.objects.get( pk=comment_id )
+        blob_id = request.GET['c']
         blob = Blob.objects.get(pk=blob_id)
 
         if blob:

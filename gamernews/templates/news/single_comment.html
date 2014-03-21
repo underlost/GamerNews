@@ -34,11 +34,10 @@
     <div id="reply{{ comment.id }}comment">
 
         {% get_comment_form for comment.content_object as form %}
-        <form class="comment-form" action="/comments/post/" method="post">
-            {% csrf_token %}
+        <form class="comment-form" action="/comments/post/" method="post">{% csrf_token %}
             {{ form.as_p }}
 			<div class="form-group">
-				<input type="submit" class="btn btn-default" value="Submit" />
+				<input type="submit" class="btn btn-default" value="Add Comment" />
             	<input type="hidden" name="parent" id="id_parent" value="{{ comment.id }}" />
             	<input type="hidden" name="next" value="/id/{{ blob.id }}/#c{{ comment.id }}" />
 			</div>

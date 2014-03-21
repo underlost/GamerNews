@@ -12,3 +12,15 @@ def single_comment(request, id):
     comment = get_object_or_404(ThreadedComment, id=id)
     variables = RequestContext(request, {'comment': comment})
     return render_to_response('comments/single.html', variables)
+
+def comment_posted( request ):
+    if request.GET['c']:
+        comment_id, feeditem_id  = request.GET['c'].split( ':' )
+        feeditem = FeedItem.objects.get( pk=feeditem_id )
+
+        if post:
+            return HttpResponseRedirect( feeditem.get_absolute_url() )
+
+    return HttpResponseRedirect( "/" )
+
+    

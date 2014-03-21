@@ -14,5 +14,6 @@ blob_dict = {
 }
 
 urlpatterns = patterns('',
+	url(r'^comments/posted/$', views.comment_posted, name = 'comment-redirect' ),
 	url(r'^comment/(?P<id>.*)/$', views.single_comment, name='single_comment'),
 )

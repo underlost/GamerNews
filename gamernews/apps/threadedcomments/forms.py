@@ -35,6 +35,20 @@ class ThreadedCommentForm(CommentForm):
         d['parent_id'] = self.cleaned_data['parent']
         return d
 
+    def get_comment_create_data(self):
+    # Use the data of the superclass, and remove extra fields
+    return dict(
+        content_type = ContentType.objects.get_for_model(self.target_object),
+        object_pk    = force_unicode(self.target_object._get_pk_val()),
+        comment      = self.cleaned_data["comment"],
+        submit_date  = datetime.datetime.now(),
+        site_id      = settings.SITE_ID,
+        is_public    = True,
+        is_removed   = False,
+        parent_id    = self.cleaned_data['parent']
+
+    )
+
 ThreadedCommentForm.base_fields.pop('name')
 ThreadedCommentForm.base_fields.pop('email')
 ThreadedCommentForm.base_fields.pop('url')

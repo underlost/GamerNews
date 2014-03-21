@@ -22,8 +22,8 @@ urlpatterns = patterns('',
 
 	#Profile
 	url(r'user/', include('gamernews.apps.profile.urls', namespace="Profile",)),
-	url(r'^comments/', include('gamernews.vendor.django_comments.urls')),
 	url(r'^', include('gamernews.apps.threadedcomments.urls')),
+	url(r'^comments/', include('gamernews.vendor.django_comments.urls')),
 	url(r'^', include('gamernews.apps.core.urls', namespace="Core",)),
 	url(r'^', include('gamernews.apps.news.urls')),
 )

@@ -9,6 +9,8 @@ from django.utils.encoding import force_unicode
 from django_comments.forms import CommentForm
 from .models import ThreadedComment
 
+COMMENT_MAX_LENGTH = getattr(settings,'COMMENT_MAX_LENGTH', 3000)
+
 class ThreadedCommentForm(CommentForm):
     parent = forms.IntegerField(required=False, widget=forms.HiddenInput)
 

@@ -6,6 +6,7 @@ from django.views.generic.list import ListView
 
 from core.models import Account as User
 from django_comments.models import Comment
+from news.models import Blob, BlobInstance
 from .models import ThreadedComment
 
 def single_comment(request, id):
@@ -15,12 +16,10 @@ def single_comment(request, id):
 
 def comment_posted( request ):
     if request.GET['c']:
-        comment_id, feeditem_id  = request.GET['c'].split( ':' )
-        feeditem = FeedItem.objects.get( pk=feeditem_id )
+        comment_id, blob_id  = request.GET['c'].split( ':' )
+        blob = Blob.objects.get( pk=blob_id )
 
         if post:
-            return HttpResponseRedirect( feeditem.get_absolute_url() )
+            return HttpResponseRedirect( blob.get_absolute_url() )
 
     return HttpResponseRedirect( "/" )
-
-    

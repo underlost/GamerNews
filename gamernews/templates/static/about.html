@@ -1,4 +1,4 @@
-{% extends 'static_base.html' %}
+{% extends 'page_base.html' %}
 
 {% block title %}About | {% endblock %}
 
@@ -8,7 +8,7 @@
 	<h2 id="JG-head">About {{site_name}}</h2>
 
 	<div class="well">
-		
+
 		<h3>How?</h3>
 		<p>{{site_name}} was written in Django, a python web framework. It uses a mix of Redis for storing votes, and memcache for caching everything.
 		PostgreSQL is used for storing profiles, stories and everything else. Static content is hosted on a Media Temple (dv) server, while the app itself is served up on Heroku.</p>
@@ -33,4 +33,8 @@
 	</div>
 
 </section>
+{% endblock %}
+
+{% block sidebar-inner %}
+	{% include "core/includes/support.html" %}
 {% endblock %}

@@ -1,48 +1,47 @@
-{% extends "base.html" %}
+{% extends 'page_base.html' %}
 
 {% block title %}submit{% endblock %}
 {% block page %}gamernews{% endblock %}
 
-{% block header %}
-	{% include "_includes/header.html" %}	
+{% block content-inner %}
+<section class="page">
+	<h2 id="JG-head">Submit</h2>
+
+	<div class="well">
+		<form id="NewsForm" method="post" action="/submit/">{% csrf_token %}
+			<fieldset>
+			{{ form.non_field_errors }}
+				<div class="form-group col-md-8{% if blob_form.title.errors %} has-error{% endif %}">
+					<label class="control-label" for="id_title">Title</label>
+					<div class="form-group">
+					{{ blob_form.title}}
+					<span class="help-block">A title is required.</span>
+					</div>
+				</div>
+
+				<div class="form-group col-md-8">
+					<label class="control-label" for="id_url">URL</label>
+					{{ blob_form.url }}
+					<span class="help-block">Leave the url blank if you would like to submit a question or post for discussion.</span>
+				</div>
+
+				<div class="form-group col-md-8">
+					<label class="control-label" for="id_note">Description</label>
+					{{ blob_form.note }}
+					<span class="help-block">A description is helpful, but not required.</span>
+				</div>
+
+				<div class="form-group col-md-8">
+					<input type="submit" class="btn btn-default" value="Submit" />
+				</div>
+
+			</fieldset>
+		</form>
+	</div>
+
+</section>
 {% endblock %}
 
-{% block content %}
-<form id="NewsForm" method="post" action="/submit/">{% csrf_token %}
-	<fieldset>
-      {{ form.non_field_errors }}
-    	<div class="form-group col-md-8{% if blob_form.title.errors %} has-error{% endif %}">
-      		<label class="control-label" for="id_title">Title</label>
-      		<div class="form-group">
-        	{{ blob_form.title}}
-        	<span class="help-block">A title is required.</span>
-      		</div>
-    	</div>
-    	    	
-    	<div class="form-group col-md-8">
-      		<label class="control-label" for="id_url">URL</label>
-        	{{ blob_form.url }}
-        	<span class="help-block">Leave the url blank if you would like to submit a question or post for discussion.</span>
-    	</div>
-		
-    	<div class="form-group col-md-8">
-            <label class="control-label" for="id_note">Description</label>
-             {{ blob_form.note }}
-             <span class="help-block">A description is helpful, but not required.</span>
-        </div>
-		
-		<div class="form-group col-md-8">
-			<input type="submit" class="btn btn-default" value="Submit" />
-		</div>
-		
-  	</fieldset>
-</form>
-
-<p>You can also drag this handy <a href="{{ bookmarklet }}">bookmarklet</a> up to your toolbar.</p>
-
-{% endblock %}
-
-
-{% block footer %}
-	{% include "_includes/footer.html" %}
+{% block sidebar-inner %}
+	<p>You can also drag this handy <a href="{{ bookmarklet }}">bookmarklet</a> up to your toolbar.</p>
 {% endblock %}
